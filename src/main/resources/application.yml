@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://dpg-cuo4243qf0us738rdfbg-a.oregon-postgres.render.com:5432/waterbot
+    username: ldap
+    password: NSiaRq1dD4h4DrPY5VyFd5piLnu5iqAX
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+server:
+  tomcat:
+    max-http-form-post-size: 64KB
+    max-swallow-size: 64KB
+  max-http-request-header-size: 64KB
+  port: 8089
+
+telegram:
+  bot:
+    username: WaterBonusBot
+    token: 7825385939:AAEeGH7hHl3WIVbUk5GIB2zqgtOaukjydpc
