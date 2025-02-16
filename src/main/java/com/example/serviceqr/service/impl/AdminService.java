@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,11 +33,58 @@ public class AdminService {
     public List<UserDto> getAllUsers() {
         List<Users> users = usersRepository.findAll();
         List<UserDto> response = new ArrayList<>();
+
+        // Получаем всех резидентов за один запрос и создаем Map<UserId, Resident>
+        Map<Long, Resident> residentMap = residentRepository.findAll().stream()
+                .collect(Collectors.toMap(Resident::getUserId, resident -> resident));
+
         for (Users user : users) {
-            response.add(new UserDto(user.getId(), user.getUserId(), user.getIin(), user.getAddress(), user.getPhone(), user.getIsVerified()));
+            Resident resident = residentMap.get(user.getUserId());
+
+            // Получаем бонус пользователя (можно оптимизировать в future)
+            Bonus bonus = bonusRepository.findByUserId(user.getUserId()).orElse(null);
+
+            // Создаем DTO пользователя
+            UserDto userDto = new UserDto(
+                    user.getId(),
+                    user.getUserId(),
+                    user.getIin(),
+                    user.getAddress(),
+                    user.getPhone(),
+                    user.getIsVerified()
+            );
+
+            // Добавляем ResidentDto, если есть резидент
+            if (resident != null) {
+                ResidentDto residentDto = new ResidentDto(
+                        resident.getId(),
+                        resident.getUserId(),
+                        resident.getAdults(),
+                        resident.getChildren(),
+                        resident.getRenters(),
+                        resident.getTimestamp()
+                );
+                userDto.setResident(residentDto);
+            }
+
+            // Добавляем BonusDto, если есть бонус
+            if (bonus != null) {
+                BonusDto bonusDto = new BonusDto(
+                        bonus.getId(),
+                        bonus.getUserId(),
+                        bonus.getBalance(),
+                        bonus.getLastUpdate()
+                );
+                userDto.setBonus(bonusDto); // ✅ Устанавливаем в `UserDto`
+            }
+
+            response.add(userDto);
         }
+
         return response;
     }
+
+
     public List<BonusDto> getAllBonuses() {
         List<Bonus> bonuses = bonusRepository.findAll();
         List<BonusDto> response = new ArrayList<>();
@@ -57,7 +106,7 @@ public class AdminService {
         List<Resident> residents = residentRepository.findAll();
         List<ResidentDto> response = new ArrayList<>();
         for (Resident resident : residents) {
-            response.add(new ResidentDto(resident.getId(), resident.getUserId(), resident.getAdults(), resident.getChildren(), resident.getTimestamp()));
+            response.add(new ResidentDto(resident.getId(), resident.getUserId(), resident.getAdults(), resident.getChildren(),resident.getRenters(), resident.getTimestamp()));
         }
         return response;
     }

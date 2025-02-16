@@ -16,4 +16,15 @@ public class UserDto {
     private String address;
     private String phone;
     private Boolean isVerified;
+    private ResidentDto resident;
+    private BonusDto bonus;
+
+        public UserDto(Long id, Long userId, String iin, String address, String phone, Boolean isVerified) {
+            this.id = id;
+            this.userId = userId;
+            this.iin = iin;
+            this.address = address;
+            this.phone = phone;
+            this.isVerified = isVerified;
+        }
 }

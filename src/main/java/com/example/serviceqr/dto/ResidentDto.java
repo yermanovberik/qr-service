@@ -16,5 +16,6 @@ public class ResidentDto {
     private Long userId;
     private Long adults;
     private Long children;
+    private Long renters;
     private LocalDateTime timestamp;
 }

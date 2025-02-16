@@ -24,6 +24,8 @@ public class Resident {
 
     private Long children;
 
+    private Long renters;
+
     @Column(nullable = false)
     private LocalDateTime timestamp;
 

@@ -1,25 +1,11 @@
-# Используем официальный образ OpenJDK 17
-FROM eclipse-temurin:17-jdk
-
-# Устанавливаем рабочую директорию внутри контейнера
+FROM maven:3.8.4-openjdk-17 AS build
 WORKDIR /app
-
-# Копируем файл pom.xml и скачиваем зависимости (кэшируем слои)
-COPY pom.xml mvnw ./
-COPY .mvn .mvn
-RUN chmod +x mvnw && ./mvnw dependency:go-offline
-
-# Копируем исходный код приложения
+COPY pom.xml .
 COPY src ./src
+RUN mvn clean package
 
-# Собираем приложение
-RUN ./mvnw clean package -DskipTests
-
-# Разрешаем запуск jar файла
-RUN chmod +x target/*.jar
-
-# Открываем порт 8089
+FROM openjdk:17-jdk-slim as deploy
 EXPOSE 8089
-
-# Запускаем приложение
-CMD ["java", "-jar", "target/*.jar"]
+ARG JAR_FILE=target/*.jar
+COPY --from=build /app/${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
