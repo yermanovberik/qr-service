@@ -34,6 +34,9 @@ public class QrCode {
     @Column(nullable = false)
     private LocalDateTime expiresAt;
 
+    @Column(name = "order_id")
+    private Long orderId;
+
     @Column(nullable = false)
     private boolean isUsed = false;
 }
