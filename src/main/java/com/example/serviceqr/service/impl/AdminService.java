@@ -49,6 +49,7 @@ public class AdminService {
                     user.getId(),
                     user.getUserId(),
                     user.getIin(),
+                    user.getDistrict(),
                     user.getAddress(),
                     user.getPhone(),
                     user.getIsVerified()

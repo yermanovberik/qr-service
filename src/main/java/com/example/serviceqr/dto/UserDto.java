@@ -13,16 +13,18 @@ public class UserDto {
     private Long id;
     private Long userId;
     private String iin;
+    private String district;
     private String address;
     private String phone;
     private Boolean isVerified;
     private ResidentDto resident;
     private BonusDto bonus;
 
-        public UserDto(Long id, Long userId, String iin, String address, String phone, Boolean isVerified) {
+        public UserDto(Long id, Long userId, String iin, String district,String address, String phone, Boolean isVerified) {
             this.id = id;
             this.userId = userId;
             this.iin = iin;
+            this.district =district;
             this.address = address;
             this.phone = phone;
             this.isVerified = isVerified;

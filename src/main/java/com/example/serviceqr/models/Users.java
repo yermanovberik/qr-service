@@ -23,6 +23,9 @@ public class Users {
 
     private String address;
 
+    @Column(name = "district")
+    private String district;
+
     private String phone;
 
     @Column(name = "is_verified")
