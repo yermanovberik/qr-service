@@ -53,11 +53,18 @@ class LocationController {
                 "Алматы, Тимирязева 42"
         );
 
+        List<String> factories = List.of(
+                "Каскелен, Бурашева 34",
+                "Шамалган, Абиш 1"
+        );
+
         Map<String, Object> response = new HashMap<>();
         response.put("clients", clients.stream().map(addr -> Map.of("address", addr, "coordinates", getCoordinates(addr))).toList());
         response.put("recycling_machines", recyclingMachines.stream().map(addr -> Map.of("address", addr, "coordinates", getCoordinates(addr))).toList());
         response.put("water_points", waterPoints.stream().map(addr -> Map.of("address", addr, "coordinates", getCoordinates(addr))).toList());
+        response.put("factories", factories.stream().map(addr -> Map.of("address", addr, "coordinates", getCoordinates(addr))).toList());
 
         return response;
     }
+
 }
